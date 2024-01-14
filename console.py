@@ -24,11 +24,11 @@ class HBNBCommand(cmd.Cmd):
                'State': State, 'Place': Place, 'Review': Review,
                'User': User, 'City': City}
 
-    def d_quit(self, arg):
+    def do_quit(self, arg):
         """ Defines quit"""
         return True
 
-    def d_EOF(self, arg):
+    def do_EOF(self, arg):
         """ Defines EOF """
         print()
         return True
@@ -37,7 +37,7 @@ class HBNBCommand(cmd.Cmd):
         """ Defines Empty """
         pass
 
-    def d_create(self, arg):
+    def do_create(self, arg):
         """Creates an instance"""
         if arg:
             if arg in self.classes:
@@ -52,7 +52,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         return
 
-    def d_show(self, arg):
+    def do_show(self, arg):
         """ show string """
         tok = shlex.split(arg)
         if len(tok) == 0:
@@ -70,7 +70,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
         return
 
-    def d_destroy(self, arg):
+    def do_destroy(self, arg):
         """Deletes an instance """
         tokd = shlex.split(arg)
         if len(tokd) == 0:
@@ -92,7 +92,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
-    def d_all(self, arg):
+    def do_all(self, arg):
         """all string """
         toka = shlex.split(arg)
         listo = []
@@ -122,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
             # if listI:
             print(listo)
 
-    def d_update(self, arg):
+    def do_update(self, arg):
         """Updates an instance"""
         toku = shlex.split(arg)
         if len(toku) == 0:
@@ -155,9 +155,9 @@ class HBNBCommand(cmd.Cmd):
         setattr(insto, toku[2], toku[3])
         models.storage.save()
 
-    def d_count(self, arg):
+    def do_count(self, arg):
         """  retrieve the number of instances """
-        toka = shlex.split(arg)
+        toka= shlex.split(arg)
         dict = models.storage.all()
         num_inst = 0
         if toka[0] not in self.classes:
@@ -171,7 +171,7 @@ class HBNBCommand(cmd.Cmd):
 
             print(num_inst)
 
-    def precommd(self, args):
+    def precmd(self, args):
         """ executed just before the command  """
         arg = args.split('.', 1)
         if len(arg) == 2:
@@ -192,3 +192,4 @@ class HBNBCommand(cmd.Cmd):
 if __name__ == '__main__':
     """infinite loop"""
     HBNBCommand().cmdloop()
+
