@@ -157,7 +157,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, arg):
         """  retrieve the number of instances """
-        toka= shlex.split(arg)
+        toka = shlex.split(arg)
         dict = models.storage.all()
         num_inst = 0
         if toka[0] not in self.classes:
@@ -192,4 +192,3 @@ class HBNBCommand(cmd.Cmd):
 if __name__ == '__main__':
     """infinite loop"""
     HBNBCommand().cmdloop()
-
