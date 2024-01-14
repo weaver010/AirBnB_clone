@@ -24,11 +24,11 @@ class HBNBCommand(cmd.Cmd):
                'State': State, 'Place': Place, 'Review': Review,
                'User': User, 'City': City}
 
-    def do_quit(self, arg):
-        """ Defines quit"""
+    def do_quit(self, argument):
+        """ Defines quit """
         return True
 
-    def do_EOF(self, arg):
+    def do_EOF(self, argument):
         """ Defines EOF """
         print()
         return True
@@ -37,12 +37,12 @@ class HBNBCommand(cmd.Cmd):
         """ Defines Empty """
         pass
 
-    def do_create(self, arg):
-        """Creates an instance"""
-        if arg:
-            if arg in self.classes:
+    def do_create(self, argument):
+        """Creates an instance of BaseModel"""
+        if argument:
+            if argument in self.classes:
                 # instance = models.base_model.BaseModel()
-                get_class = getattr(sys.modules[__name__], arg)
+                get_class = getattr(sys.modules[__name__], argument)
                 instance = get_class()
                 print(instance.id)
                 models.storage.save()
@@ -52,9 +52,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         return
 
-    def do_show(self, arg):
-        """ show string """
-        tok = shlex.split(arg)
+    def do_show(self, argument):
+        """string representation """
+        tok = shlex.split(argument)
         if len(tok) == 0:
             print("** class name missing **")
         elif len(tok) == 1:
@@ -63,6 +63,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             dict = models.storage.all()
+            # Key has format <className>.id
             ky = tok[0] + '.' + str(tok[1])
             if ky in dict:
                 print(dict[ky])
@@ -70,9 +71,9 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
         return
 
-    def do_destroy(self, arg):
+    def do_destroy(self, argument):
         """Deletes an instance """
-        tokd = shlex.split(arg)
+        tokd = shlex.split(argument)
         if len(tokd) == 0:
             print("** class name missing **")
             return
@@ -92,9 +93,9 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
-    def do_all(self, arg):
-        """all string """
-        toka = shlex.split(arg)
+    def do_all(self, argument):
+        """ string representation of all instances"""
+        toka = shlex.split(argument)
         listo = []
         dict = models.storage.all()
         # show all if no class is passed
@@ -113,8 +114,8 @@ class HBNBCommand(cmd.Cmd):
             # Representation for a specific class
             rep_Class = ""
             for k in dict:
-                cl_name = k.split('.')
-                if cl_name[0] == toka[0]:
+                className = k.split('.')
+                if className[0] == toka[0]:
                     # This form doesn't work
                     # listI.append(dic[key])
                     rep_Class = str(dict[k])
@@ -122,9 +123,9 @@ class HBNBCommand(cmd.Cmd):
             # if listI:
             print(listo)
 
-    def do_update(self, arg):
-        """Updates an instance"""
-        toku = shlex.split(arg)
+    def do_update(self, argument):
+        """Updates an instance """
+        toku = shlex.split(argument)
         if len(toku) == 0:
             print("** class name missing **")
             return
@@ -155,9 +156,9 @@ class HBNBCommand(cmd.Cmd):
         setattr(insto, toku[2], toku[3])
         models.storage.save()
 
-    def do_count(self, arg):
-        """  retrieve the number of instances """
-        toka = shlex.split(arg)
+    def do_count(self, argument):
+        """  retrieve the number of instances"""
+        toka = shlex.split(argument)
         dict = models.storage.all()
         num_inst = 0
         if toka[0] not in self.classes:
@@ -165,15 +166,15 @@ class HBNBCommand(cmd.Cmd):
             return
         else:
             for k in dict:
-                cl_name = k.split('.')
-                if cl_name[0] == toka[0]:
+                className = k.split('.')
+                if className[0] == toka[0]:
                     num_inst += 1
 
             print(num_inst)
 
-    def precmd(self, args):
-        """ executed just before the command  """
-        arg = args.split('.', 1)
+    def precmd(self, argument):
+        """ executed just before the command line  """
+        arg = argument.split('.', 1)
         if len(arg) == 2:
             _cl = arg[0]
             arg = arg[1].split('(', 1)
@@ -186,7 +187,7 @@ class HBNBCommand(cmd.Cmd):
             line = cmd + " " + _cl + " " + _id + " " + ot_arg
             return line
         else:
-            return args
+            return argument
 
 
 if __name__ == '__main__':
